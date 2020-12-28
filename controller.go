@@ -41,11 +41,16 @@ func main() {
 				switch {
 				case ev.Ch == 'q':
 					return
+				case ev.Key == termbox.KeyArrowLeft:
+					g.movePiece(left)
+				case ev.Key == termbox.KeyArrowRight:
+					g.movePiece(right)
 				}
+
 			}
 
 		//case <-g.clock.C:
-		// timer went of
+		//timer went of
 		//g.play()
 		default:
 			render(g)

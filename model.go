@@ -6,7 +6,7 @@ import (
 )
 
 // Constants
-const boardHeight = 20
+const boardHeight = 30
 const boardWidth = 10
 const gameSpeed = 1000 * time.Millisecond
 const numberSquares = 4
@@ -81,15 +81,16 @@ func initializeBoard(initValue int) [][]int {
 
 func NewGame() *Game {
 	g := new(Game)
-	g.x = 1
-	g.y = 1
+	g.x = 5
+	g.y = 5
 	g.board = initializeBoard(0)
 	g.clock = time.NewTimer(gameSpeed)
+	g.spawnRandomPiece()
 	return g
 }
 func (g *Game) play() {
-	if g.movePiece(down) {
-		g.resetClock()
+	for i := 0; i < 4; i++ {
+		g.movePiece(down)
 	}
 }
 
@@ -131,7 +132,7 @@ func (g *Game) updateBoard(value int) {
 	for i := 0; i < numberSquares; i++ {
 		x := g.x + g.piece.deltaX[i]
 		y := g.y + g.piece.deltaY[i]
-		g.board[x][y] = value
+		g.board[y][x] = value
 	}
 }
 
