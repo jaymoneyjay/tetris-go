@@ -1,5 +1,6 @@
 # TetrisGo
 A go implementation of the classic tetris game
+
 ![Screenshot](Screenshot.png)
 
 ## Install
