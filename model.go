@@ -53,6 +53,31 @@ func newPiece(deltaX []int, deltaY []int, color int) Piece {
 	return *p
 }
 
+// deepCopy returns a deep copy of the specified piece
+func deepCopy(piece Piece) Piece {
+	deltaXPrime := make([]int, numberSquares)
+	deltaYPrime := make([]int, numberSquares)
+
+	for i := 0; i < numberSquares; i++ {
+		deltaXPrime[i] = piece.deltaX[i]
+		deltaYPrime[i] = piece.deltaY[i]
+	}
+
+	colorPrime := piece.color
+
+	return newPiece(deltaXPrime, deltaYPrime, colorPrime)
+}
+
+// rotate rotates a piece by swapping the delta values and flip one sign
+func (p Piece) rotate() {
+	for i := 0; i < numberSquares; i++ {
+		newY := -p.deltaX[i]
+		newX := p.deltaY[i]
+		p.deltaX[i] = newX
+		p.deltaY[i] = newY
+	}
+}
+
 // Direction represents the directions left, down and right
 type Direction int
 
@@ -67,10 +92,10 @@ type Game struct {
 	x int
 	y int
 	//board[y][x]
-	board    [][]int
-	piece    Piece
-	pieceRot Piece
-	clock    *time.Timer
+	board        [][]int
+	piece        Piece
+	pieceRotated Piece
+	clock        *time.Timer
 }
 
 // helper function to initialize a new board
@@ -112,8 +137,8 @@ func (g *Game) resetClock() {
 // pieceFits checks returns a boolean indicating wether or not a piece fits in a specified location
 func (g *Game) pieceFits(x int, y int) bool {
 	for i := 0; i < numberSquares; i++ {
-		squareX := x + g.piece.deltaX[i]
-		squareY := y + g.piece.deltaY[i]
+		squareX := x + g.pieceRotated.deltaX[i]
+		squareY := y + g.pieceRotated.deltaY[i]
 
 		// The piece collides with border
 		if squareX < 0 || boardWidth <= squareX || boardHeight <= squareY {
@@ -121,7 +146,7 @@ func (g *Game) pieceFits(x int, y int) bool {
 		}
 
 		// The piece collides with other piece
-		if g.board[squareY][squareX] < 0 {
+		if squareY >= 0 && g.board[squareY][squareX] < 0 {
 			return false
 		}
 	}
@@ -152,15 +177,22 @@ func (g *Game) movePiece(dir Direction) bool {
 
 // TODO: check for bug if piece collides with other after roatation
 // rotate rotates a piece
-func (g *Game) rotatePiece() {
-	g.deletePiece()
-	deltaTemp := g.piece.deltaX
-	for i := range deltaTemp {
-		deltaTemp[i] = -deltaTemp[i]
+func (g *Game) rotatePiece() bool {
+	g.pieceRotated.rotate()
+	if !g.pieceFits(g.x, g.y) {
+
+		// reverse rotation
+		for i := 0; i < 3; i++ {
+			g.pieceRotated.rotate()
+		}
+		return false
 	}
-	g.piece.deltaX = g.piece.deltaY
-	g.piece.deltaY = deltaTemp
+
+	g.deletePiece()
+	g.piece.rotate()
 	g.placePiece()
+
+	return true
 }
 
 // TODO: checkRow()
@@ -192,6 +224,7 @@ func (g *Game) placePiece() {
 func (g *Game) spawnRandomPiece() {
 	color := rand.Int() % numberPieces
 	g.piece = pieces[color]
+	g.pieceRotated = deepCopy(pieces[color])
 	g.x = boardWidth / 2
 	g.y = 0
 	g.placePiece()
