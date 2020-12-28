@@ -22,17 +22,17 @@ type Piece struct {
 // Collection of all possible tetris pieces modeled with offset coordinates
 var pieces = []Piece{
 	//half cross
-	newPiece([]int{0, 1, 2, 1}, []int{0, 0, 0, 1}, 0),
+	newPiece([]int{-1, 0, 1, 0}, []int{0, 0, 0, 1}, 0),
 	//straight
-	newPiece([]int{0, 1, 2, 3}, []int{0, 0, 0, 0}, 1),
+	newPiece([]int{-1, 0, 1, 2}, []int{0, 0, 0, 0}, 1),
 	//left L
-	newPiece([]int{0, 1, 1, 1}, []int{0, 0, 1, 2}, 2),
+	newPiece([]int{0, 1, 1, 1}, []int{-1, -1, 0, 1}, 2),
 	//right L
-	newPiece([]int{0, 0, 0, 1}, []int{0, 1, 2, 1}, 3),
+	newPiece([]int{0, 0, 0, 1}, []int{-1, 0, 1, 0}, 3),
 	//square
 	newPiece([]int{0, 0, 1, 1}, []int{0, 1, 0, 1}, 4),
 	//left knee
-	newPiece([]int{0, 0, 1, 1}, []int{0, 1, 1, 2}, 5),
+	newPiece([]int{0, 0, 1, 1}, []int{-1, 0, 0, 1}, 5),
 	//right knee
 	newPiece([]int{0, 0, 1, 1}, []int{0, 1, 0, -1}, 6),
 }
