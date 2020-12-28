@@ -12,6 +12,9 @@ const gameSpeed = 1000 * time.Millisecond
 const numberSquares = 4
 const numberPieces = 7
 
+// Score stores the number of lines completed
+var Score = 0
+
 // Piece represents a tetris piece by storing the color and coordinate offset
 type Piece struct {
 	deltaX []int
@@ -201,6 +204,7 @@ func (g *Game) checkRows() {
 	for y := 0; y < boardHeight; y++ {
 		if g.rowComplete(y) {
 			g.copyRows(y)
+			Score++
 		}
 	}
 }
