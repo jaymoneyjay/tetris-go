@@ -6,9 +6,9 @@ import (
 )
 
 // Constants
-const boardHeight = 30
+const boardHeight = 20
 const boardWidth = 10
-const gameSpeed = 1000 * time.Millisecond
+const gameSpeed = 100 * time.Millisecond
 const numberSquares = 4
 const numberPieces = 7
 
