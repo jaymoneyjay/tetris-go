@@ -41,12 +41,13 @@ func main() {
 				switch {
 				case ev.Ch == 'q':
 					return
+				case ev.Key == termbox.KeyArrowDown:
+					g.movePiece(down)
 				case ev.Key == termbox.KeyArrowLeft:
 					g.movePiece(left)
 				case ev.Key == termbox.KeyArrowRight:
 					g.movePiece(right)
 				}
-
 			}
 
 		case <-g.clock.C:

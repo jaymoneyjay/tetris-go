@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math"
+
 	"github.com/nsf/termbox-go"
 )
 
@@ -24,7 +26,7 @@ func render(g *Game) {
 	termbox.Clear(backgroundColor, backgroundColor)
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
-			pieceIndex := g.board[y][x]
+			pieceIndex := int(math.Abs(float64(g.board[y][x])))
 			pieceColor := pieceColors[pieceIndex]
 			for c := 0; c < cellWidth; c++ {
 				termbox.SetCell(boardStart+cellWidth*x+c, boardStart+y, ' ', pieceColor, pieceColor)

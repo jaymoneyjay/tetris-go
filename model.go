@@ -91,7 +91,11 @@ func NewGame() *Game {
 func (g *Game) play() {
 	if g.movePiece(down) {
 		g.resetClock()
+	} else {
+		g.lockPiece()
+		g.resetClock()
 	}
+
 }
 
 func (g *Game) resetClock() {
@@ -104,7 +108,13 @@ func (g *Game) pieceFits(x int, y int) bool {
 		squareX := x + g.piece.deltaX[k]
 		squareY := y + g.piece.deltaY[k]
 
+		// The piece collides with border
 		if squareX < 0 || boardWidth <= squareX || boardHeight <= squareY {
+			return false
+		}
+
+		// The piece collides with other piece
+		if g.board[squareY][squareX] < 0 {
 			return false
 		}
 	}
@@ -165,4 +175,13 @@ func (g *Game) spawnRandomPiece() {
 	g.x = boardWidth / 2
 	g.y = 0
 	g.placePiece()
+}
+
+func (g *Game) lockPiece() bool {
+	if !g.pieceFits(g.x, g.y+1) {
+		g.updateBoard(-g.piece.color)
+		g.spawnRandomPiece()
+		return true
+	}
+	return false
 }
