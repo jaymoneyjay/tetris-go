@@ -89,8 +89,8 @@ func NewGame() *Game {
 	return g
 }
 func (g *Game) play() {
-	for i := 0; i < 4; i++ {
-		g.movePiece(down)
+	if g.movePiece(down) {
+		g.resetClock()
 	}
 }
 
@@ -100,6 +100,15 @@ func (g *Game) resetClock() {
 
 // pieceFits()
 func (g *Game) pieceFits(x int, y int) bool {
+	for k := 0; k < numberSquares; k++ {
+		squareX := x + g.piece.deltaX[k]
+		squareY := y + g.piece.deltaY[k]
+
+		if squareX < 0 || boardWidth <= squareX || boardHeight <= squareY {
+			return false
+		}
+	}
+
 	return true
 }
 
@@ -132,7 +141,10 @@ func (g *Game) updateBoard(value int) {
 	for i := 0; i < numberSquares; i++ {
 		x := g.x + g.piece.deltaX[i]
 		y := g.y + g.piece.deltaY[i]
-		g.board[y][x] = value
+
+		if 0 <= y {
+			g.board[y][x] = value
+		}
 	}
 }
 

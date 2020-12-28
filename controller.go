@@ -49,9 +49,9 @@ func main() {
 
 			}
 
-		//case <-g.clock.C:
-		//timer went of
-		//g.play()
+		case <-g.clock.C:
+			//timer went of
+			g.play()
 		default:
 			render(g)
 			time.Sleep(animationSpeed)
