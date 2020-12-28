@@ -21,9 +21,8 @@ type Piece struct {
 
 // Collection of all possible tetris pieces modeled with offset coordinates
 var pieces = []Piece{
-
-	//half cross
-	newPiece([]int{-1, 0, 1, 0}, []int{0, 0, 0, 1}, 0),
+	// empty piece
+	{},
 
 	//straight
 	newPiece([]int{-1, 0, 1, 2}, []int{0, 0, 0, 0}, 1),
@@ -42,6 +41,9 @@ var pieces = []Piece{
 
 	//right knee
 	newPiece([]int{0, 0, 1, 1}, []int{0, 1, 0, -1}, 6),
+
+	//half cross
+	newPiece([]int{-1, 0, 1, 0}, []int{0, 0, 0, 1}, 7),
 }
 
 // newPiece returns a new instantiation of a Piece
@@ -222,7 +224,7 @@ func (g *Game) placePiece() {
 
 // spawnRandomPiece spawns a new piece and sets it to be the currently active piece
 func (g *Game) spawnRandomPiece() {
-	color := rand.Int() % numberPieces
+	color := rand.Int()%numberPieces + 1
 	g.piece = pieces[color]
 	g.pieceRotated = deepCopy(pieces[color])
 	g.x = boardWidth / 2

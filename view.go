@@ -6,26 +6,31 @@ import (
 	"github.com/nsf/termbox-go"
 )
 
-// Constants
+// Layout
 const boardStart = 0
 const cellWidth = 3
 const boardEnd = boardWidth*cellWidth + boardStart
 const backgroundColor = termbox.ColorLightGray
 
+// Text
+const title = "TETRIS"
+
 // Colors
 var pieceColors = []termbox.Attribute{
-	termbox.ColorRed,
+	termbox.ColorBlack,
 	termbox.ColorBlue,
 	termbox.ColorGreen,
 	termbox.ColorYellow,
 	termbox.ColorLightRed,
 	termbox.ColorLightCyan,
 	termbox.ColorMagenta,
+	termbox.ColorRed,
 }
 
-// render renders the games board
+// render renders the board of the game
 func render(g *Game) {
 	termbox.Clear(backgroundColor, backgroundColor)
+	tbprint(0, 0, termbox.ColorYellow, backgroundColor, title)
 	for y := 0; y < boardHeight; y++ {
 		for x := 0; x < boardWidth; x++ {
 			pieceIndex := int(math.Abs(float64(g.board[y][x])))
@@ -36,4 +41,12 @@ func render(g *Game) {
 		}
 	}
 	termbox.Flush()
+}
+
+// Function tbprint draws a string.
+func tbprint(x, y int, fg, bg termbox.Attribute, msg string) {
+	for _, c := range msg {
+		termbox.SetCell(x, y, c, fg, bg)
+		x++
+	}
 }
