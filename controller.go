@@ -43,6 +43,8 @@ func main() {
 					return
 				case ev.Key == termbox.KeyArrowDown:
 					g.movePiece(down)
+				case ev.Key == termbox.KeyArrowUp:
+					g.rotatePiece()
 				case ev.Key == termbox.KeyArrowLeft:
 					g.movePiece(left)
 				case ev.Key == termbox.KeyArrowRight:

@@ -104,9 +104,9 @@ func (g *Game) resetClock() {
 
 // pieceFits()
 func (g *Game) pieceFits(x int, y int) bool {
-	for k := 0; k < numberSquares; k++ {
-		squareX := x + g.piece.deltaX[k]
-		squareY := y + g.piece.deltaY[k]
+	for i := 0; i < numberSquares; i++ {
+		squareX := x + g.piece.deltaX[i]
+		squareY := y + g.piece.deltaY[i]
 
 		// The piece collides with border
 		if squareX < 0 || boardWidth <= squareX || boardHeight <= squareY {
@@ -143,6 +143,16 @@ func (g *Game) movePiece(dir Direction) bool {
 }
 
 //rotate()
+func (g *Game) rotatePiece() {
+	g.deletePiece()
+	deltaTemp := g.piece.deltaX
+	for i := range deltaTemp {
+		deltaTemp[i] = -deltaTemp[i]
+	}
+	g.piece.deltaX = g.piece.deltaY
+	g.piece.deltaY = deltaTemp
+	g.placePiece()
+}
 
 //checkRow()
 
