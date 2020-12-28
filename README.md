@@ -1,11 +1,11 @@
 # TetrisGo
 A go implementation of the classic tetris game
-![Screenshot](/Users/jodok/Desktop/tetris.png)
+![Screenshot](Screenshot.png)
 ##Install
 ```bash
 go get github.com/jaymoneyjay/TetrisGo
 ```
-##Instructions
+## Instructions
 ```bash
 q: 			quit
 right: 	move right
