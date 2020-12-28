@@ -11,6 +11,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.7.0 // indirect
 	github.com/spf13/cobra v1.1.1 // indirect
+	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518
 	go.starlark.net v0.0.0-20201210151846-e81fc95f7bd5 // indirect
 	golang.org/x/arch v0.0.0-20201207233722-1e68675e650f // indirect
 	golang.org/x/sys v0.0.0-20201223074533-0d417f636930 // indirect

@@ -177,7 +177,6 @@ func (g *Game) movePiece(dir Direction) bool {
 	return false
 }
 
-// TODO: check for bug if piece collides with other after roatation
 // rotate rotates a piece
 func (g *Game) rotatePiece() bool {
 	g.pieceRotated.rotate()
@@ -197,8 +196,41 @@ func (g *Game) rotatePiece() bool {
 	return true
 }
 
-// TODO: checkRow()
-// checkRow checks if there is a complete row and deletes it
+// checkRow checks if there is a complete row and removes it
+func (g *Game) checkRows() {
+	for y := 0; y < boardHeight; y++ {
+		if g.rowComplete(y) {
+			g.copyRows(y)
+		}
+	}
+}
+
+// copyRows copies recursively preceeding rows into the current row
+// Example: row[y] = row[y-1] and so on
+// Row 0 will be initialized with 0s
+func (g *Game) copyRows(y int) {
+
+	// Base case
+	if y == 0 {
+		for x := range g.board[y] {
+			g.board[y][x] = 0
+		}
+	} else {
+		for x := range g.board[y] {
+			g.board[y][x] = g.board[y-1][x]
+		}
+		g.copyRows(y - 1)
+	}
+}
+
+// checkRow returns a boolean to indicate whether a row is complete or not
+func (g *Game) rowComplete(index int) bool {
+	product := 1
+	for _, v := range g.board[index] {
+		product *= v
+	}
+	return (product != 0)
+}
 
 // updateBoard updates the coordinates occupied by the currently active piece with the specified value
 func (g *Game) updateBoard(value int) {
@@ -237,6 +269,7 @@ func (g *Game) spawnRandomPiece() {
 func (g *Game) lockPiece() bool {
 	if !g.pieceFits(g.x, g.y+1) {
 		g.updateBoard(-g.piece.color)
+		g.checkRows()
 		g.spawnRandomPiece()
 		return true
 	}
