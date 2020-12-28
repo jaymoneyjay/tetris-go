@@ -12,7 +12,7 @@ const gameSpeed = 1000 * time.Millisecond
 const numberSquares = 4
 const numberPieces = 7
 
-// Struct to model the tetris piece
+// Piece represents a tetris piece by storing the color and coordinate offset
 type Piece struct {
 	deltaX []int
 	deltaY []int
@@ -21,23 +21,30 @@ type Piece struct {
 
 // Collection of all possible tetris pieces modeled with offset coordinates
 var pieces = []Piece{
+
 	//half cross
 	newPiece([]int{-1, 0, 1, 0}, []int{0, 0, 0, 1}, 0),
+
 	//straight
 	newPiece([]int{-1, 0, 1, 2}, []int{0, 0, 0, 0}, 1),
+
 	//left L
 	newPiece([]int{0, 1, 1, 1}, []int{-1, -1, 0, 1}, 2),
+
 	//right L
 	newPiece([]int{0, 0, 0, 1}, []int{-1, 0, 1, 0}, 3),
+
 	//square
 	newPiece([]int{0, 0, 1, 1}, []int{0, 1, 0, 1}, 4),
+
 	//left knee
 	newPiece([]int{0, 0, 1, 1}, []int{-1, 0, 0, 1}, 5),
+
 	//right knee
 	newPiece([]int{0, 0, 1, 1}, []int{0, 1, 0, -1}, 6),
 }
 
-// Create a new piece, not exported
+// newPiece returns a new instantiation of a Piece
 func newPiece(deltaX []int, deltaY []int, color int) Piece {
 	p := new(Piece)
 	p.deltaX = deltaX
@@ -46,7 +53,7 @@ func newPiece(deltaX []int, deltaY []int, color int) Piece {
 	return *p
 }
 
-//Constast type for direction
+// Direction represents the directions left, down and right
 type Direction int
 
 const (
@@ -55,17 +62,18 @@ const (
 	right
 )
 
-// Struct to model the game
+// Game represents a
 type Game struct {
 	x int
 	y int
 	//board[y][x]
-	board [][]int
-	piece Piece
-	clock *time.Timer
+	board    [][]int
+	piece    Piece
+	pieceRot Piece
+	clock    *time.Timer
 }
 
-// helper functions
+// helper function to initialize a new board
 func initializeBoard(initValue int) [][]int {
 	b := make([][]int, boardHeight)
 	for y := 0; y < boardHeight; y++ {
@@ -77,8 +85,7 @@ func initializeBoard(initValue int) [][]int {
 	return b
 }
 
-// TODO: Methods for game
-
+// NewGame returns a pointer to anew instantiation of Game
 func NewGame() *Game {
 	g := new(Game)
 	g.x = 5
@@ -102,7 +109,7 @@ func (g *Game) resetClock() {
 	g.clock.Reset(gameSpeed)
 }
 
-// pieceFits()
+// pieceFits checks returns a boolean indicating wether or not a piece fits in a specified location
 func (g *Game) pieceFits(x int, y int) bool {
 	for i := 0; i < numberSquares; i++ {
 		squareX := x + g.piece.deltaX[i]
@@ -122,7 +129,8 @@ func (g *Game) pieceFits(x int, y int) bool {
 	return true
 }
 
-// movePiece(direction=[down, left, right])
+// movePiece tries to move a piece in the specified direction (dir=[left, down, right])
+// returns a boolean indicating if the operation was successfull
 func (g *Game) movePiece(dir Direction) bool {
 	if dir == down {
 		if g.pieceFits(g.x, g.y+1) {
@@ -142,7 +150,8 @@ func (g *Game) movePiece(dir Direction) bool {
 	return false
 }
 
-//rotate()
+// TODO: check for bug if piece collides with other after roatation
+// rotate rotates a piece
 func (g *Game) rotatePiece() {
 	g.deletePiece()
 	deltaTemp := g.piece.deltaX
@@ -154,9 +163,10 @@ func (g *Game) rotatePiece() {
 	g.placePiece()
 }
 
-//checkRow()
+// TODO: checkRow()
+// checkRow checks if there is a complete row and deletes it
 
-//updateBoard()
+// updateBoard updates the coordinates occupied by the currently active piece with the specified value
 func (g *Game) updateBoard(value int) {
 	for i := 0; i < numberSquares; i++ {
 		x := g.x + g.piece.deltaX[i]
@@ -168,17 +178,17 @@ func (g *Game) updateBoard(value int) {
 	}
 }
 
-// deletePiece()
+// deletePiece removes the currently active piece from the board
 func (g *Game) deletePiece() {
 	g.updateBoard(0)
 }
 
-// placePiece()
+// placePiece writes the pieces color value to the board at the pieces coordinates
 func (g *Game) placePiece() {
 	g.updateBoard(g.piece.color)
 }
 
-//spawnPiece()
+// spawnRandomPiece spawns a new piece and sets it to be the currently active piece
 func (g *Game) spawnRandomPiece() {
 	color := rand.Int() % numberPieces
 	g.piece = pieces[color]
@@ -187,6 +197,8 @@ func (g *Game) spawnRandomPiece() {
 	g.placePiece()
 }
 
+// lockPiece locks a piece in its current position only if piece touches the bottom margin
+// returns a boolean indication whether or not the operation was successfull
 func (g *Game) lockPiece() bool {
 	if !g.pieceFits(g.x, g.y+1) {
 		g.updateBoard(-g.piece.color)

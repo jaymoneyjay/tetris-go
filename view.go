@@ -6,12 +6,13 @@ import (
 	"github.com/nsf/termbox-go"
 )
 
+// Constants
 const boardStart = 0
 const cellWidth = 3
 const boardEnd = boardWidth*cellWidth + boardStart
-
 const backgroundColor = termbox.ColorLightGray
 
+// Colors
 var pieceColors = []termbox.Attribute{
 	termbox.ColorRed,
 	termbox.ColorBlue,
@@ -22,6 +23,7 @@ var pieceColors = []termbox.Attribute{
 	termbox.ColorMagenta,
 }
 
+// render renders the games board
 func render(g *Game) {
 	termbox.Clear(backgroundColor, backgroundColor)
 	for y := 0; y < boardHeight; y++ {

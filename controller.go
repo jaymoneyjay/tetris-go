@@ -18,12 +18,12 @@ func main() {
 	}
 	defer termbox.Close()
 
-	// Create channel, that can communicate accross threads
+	// Note: Create channel, that can communicate accross threads
 	eventQueue := make(chan termbox.Event)
 
-	// Function is handling termbox events such as user input
+	// func is handling termbox events such as user input
 	go func() {
-		// Infinite loop
+		// Note: Infinite loop
 		for {
 			eventQueue <- termbox.PollEvent()
 		}
@@ -33,10 +33,9 @@ func main() {
 	render(g)
 
 	for {
-		// switch for channels
+		// Note: Select is a switch for channels
 		select {
 		case ev := <-eventQueue:
-			// check user input
 			if ev.Type == termbox.EventKey {
 				switch {
 				case ev.Ch == 'q':
@@ -53,13 +52,10 @@ func main() {
 			}
 
 		case <-g.clock.C:
-			//timer went of
 			g.play()
 		default:
 			render(g)
 			time.Sleep(animationSpeed)
 		}
-
 	}
-
 }
