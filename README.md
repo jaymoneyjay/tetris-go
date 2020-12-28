@@ -11,7 +11,7 @@ go get github.com/jaymoneyjay/TetrisGo
 ## Instructions
 ```bash
 q: 			quit
-right: 	move right
+right: 	    move right
 left:		move left
 down:		move down
 up:			rotate
