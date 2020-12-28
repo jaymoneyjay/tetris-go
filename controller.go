@@ -1,16 +1,20 @@
 package main
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/nsf/termbox-go"
 )
 
 const animationSpeed = 10 * time.Millisecond
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
 	err := termbox.Init()
 	if err != nil {
 		panic(err)
-
 	}
 	defer termbox.Close()
 
@@ -33,13 +37,20 @@ func main() {
 		select {
 		case ev := <-eventQueue:
 			// check user input
-		case <-g.clock.C:
-			// timer went of
-			g.play()
-		}
+			if ev.Type == termbox.EventKey {
+				switch {
+				case ev.Ch == 'q':
+					return
+				}
+			}
+
+		//case <-g.clock.C:
+		// timer went of
+		//g.play()
 		default:
 			render(g)
 			time.Sleep(animationSpeed)
+		}
 
 	}
 
