@@ -18,13 +18,13 @@ const title = "TETRIS"
 // Colors
 var pieceColors = []termbox.Attribute{
 	termbox.ColorBlack,
-	termbox.ColorBlue,
-	termbox.ColorGreen,
-	termbox.ColorYellow,
-	termbox.ColorLightRed,
 	termbox.ColorLightCyan,
-	termbox.ColorMagenta,
+	termbox.ColorBlue,
+	termbox.ColorLightRed,
+	termbox.ColorYellow,
+	termbox.ColorGreen,
 	termbox.ColorRed,
+	termbox.ColorMagenta,
 }
 
 // render renders the board of the game

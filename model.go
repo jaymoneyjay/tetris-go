@@ -28,9 +28,9 @@ var pieces = []Piece{
 	newPiece([]int{-1, 0, 1, 2}, []int{0, 0, 0, 0}, 1),
 
 	//left L
-	newPiece([]int{0, 1, 1, 1}, []int{-1, -1, 0, 1}, 2),
+	newPiece([]int{-1, 0, 0, 0}, []int{1, 1, 0, -1}, 2),
 
-	//right L
+	//half cross
 	newPiece([]int{0, 0, 0, 1}, []int{-1, 0, 1, 0}, 3),
 
 	//square
@@ -42,8 +42,8 @@ var pieces = []Piece{
 	//right knee
 	newPiece([]int{0, 0, 1, 1}, []int{0, 1, 0, -1}, 6),
 
-	//half cross
-	newPiece([]int{-1, 0, 1, 0}, []int{0, 0, 0, 1}, 7),
+	//right L
+	newPiece([]int{0, 0, 0, 1}, []int{-1, 0, 1, 1}, 7),
 }
 
 // newPiece returns a new instantiation of a Piece
