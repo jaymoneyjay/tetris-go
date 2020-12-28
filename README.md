@@ -14,5 +14,5 @@ q: quit
 right: move right
 left: move left
 down: move down
-up:	rotate
+up: rotate
 ```
