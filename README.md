@@ -1,4 +1,4 @@
-# TetrisGo
+# tetris-go
 A go implementation of the classic tetris game
 
 ![Screenshot](Screenshot.png)
